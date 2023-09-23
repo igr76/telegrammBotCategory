@@ -16,6 +16,7 @@
 	<properties>
 		<java.version>17</java.version>
 		<mapstruct.version>1.4.1.Final</mapstruct.version>
+		<telegrambot.starter.version>6.1.0</telegrambot.starter.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -25,10 +26,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.liquibase</groupId>
-			<artifactId>liquibase-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
@@ -55,6 +52,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.telegram</groupId>
+			<artifactId>telegrambots-spring-boot-starter</artifactId>
+			<version>${telegrambot.starter.version}</version>
 		</dependency>
 	</dependencies>
 
