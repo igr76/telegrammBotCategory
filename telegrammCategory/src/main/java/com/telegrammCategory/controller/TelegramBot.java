@@ -10,24 +10,18 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @Slf4j
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
-
     @Value("${bot.name}")
     private String botName;
-
     @Value("${bot.token}")
     private String botToken;
-
-
-
-
     @Override
     public String getBotUsername() {
-        return null;
+        return "igr7666666ibot";
     }
 
     @Override
     public String getBotToken() {
-        return null;
+        return "6410289486:AAF4BigR_epjMbqHOt94o0U4SInPnbSCUG4";
     }
 
     @Override
