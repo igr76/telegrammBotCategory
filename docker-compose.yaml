@@ -1,0 +1,25 @@
+version: '2.3'
+
+services:
+  app:
+    build: .
+    container_name: media
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/m
+      - SPRING_DATASOURCE_USERNAME=igr
+      - SPRING_DATASOURCE_PASSWORD=11111111
+    ports:
+      - "8081:8081"
+
+
+  db:
+    image: 'postgres:14'
+    container_name: db
+    environment:
+      - POSTGRES_DB=m
+      - POSTGRES_USER=igr
+      - POSTGRES_PASSWORD=11111111
+    ports:
+      - "5432:5432"
