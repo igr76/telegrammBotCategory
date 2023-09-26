@@ -1,8 +1,8 @@
 package com.telegrammCategory.controller;
 
 public class AllText {
-    public static final String DDC_MESSAGE_UPDATE = "doc_message_update";
-    public static final String PHOTO_MESSAGE_UPDATE = "photo_message_update";
+    public static final String DDC_MESSAGE_UPDATE = "Сообщение в форме документа обрабатывается";
+    public static final String PHOTO_MESSAGE_UPDATE = "Сообщение в форме изображения обрабатывается";
     public static final String START = "/start";
     public static final String GET = "/get";
     public static final String GREAT = "/great";

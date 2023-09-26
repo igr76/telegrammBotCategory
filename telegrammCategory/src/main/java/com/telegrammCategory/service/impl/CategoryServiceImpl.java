@@ -22,7 +22,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public String greatCategory(int level, String name) {
-        Category category1 = categoryRepository.findByParentAndMaxSeg(level);
+        int maxSeq = categoryRepository.findByParentAndMaxSeg(level);
+        Category category1 = new Category();
         category1.setSeq(category1.getSeq()+1);
         category1.setName(name);
         categoryRepository.save(category1);
@@ -35,7 +36,6 @@ public class CategoryServiceImpl implements CategoryService {
         category1.setSeq(1);
         category1.setName(name);
         category1.setParent_node_id(id);
-        category1.setMenu(false);
         return getCategoryLevel(id);
     }
 
@@ -48,7 +48,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public int newLevel(Integer level, int value) {
         Category category1 = categoryRepository.findByParentAndSeg(level,value);
-        category1.setMenu(true);
+        category1.setName(category1.getName() + " >");
         categoryRepository.save(category1);
         return category1.getId();
     }
