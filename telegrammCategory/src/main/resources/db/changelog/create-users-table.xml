@@ -13,6 +13,7 @@
       </not>
     </preConditions>
 
+
     <createTable tableName="сategoryes">
       <column name="id" type="BIGINT" autoIncrement="true">
         <constraints primaryKey="true"/>
