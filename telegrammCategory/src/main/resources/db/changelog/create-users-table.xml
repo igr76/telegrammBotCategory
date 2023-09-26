@@ -27,10 +27,7 @@
       <column name="name" type="VARCHAR(16)">
         <constraints nullable="false"/>
       </column>
-      <column name="filling" type="BOOLEAN">
-        <constraints nullable="false"/>
-      </column>
-      <column name="menu" type="">
+      <column name="filling" type="VARCHAR(32)">
         <constraints nullable="false"/>
       </column>
     </createTable>

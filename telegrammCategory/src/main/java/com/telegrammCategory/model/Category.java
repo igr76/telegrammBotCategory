@@ -13,25 +13,21 @@ import lombok.experimental.FieldDefaults;
 @EqualsAndHashCode
 @Entity
 @Table(name = "сategoryes")
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Category {
     /**    Идентификатор узла     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    private Integer id;
     /**    номер родительского узла     */
     @Column(name = "parent")
-    int parent_node_id;
+    private int parent_node_id;
     /**    номер наследника     */
     @Column(name = "seq")
-    int seq;
+    private int seq;
     /**    Имя узла     */
     @Column(name = "name")
-    String name;
+    private String name;
     /**    Содержание узла     */
     @Column(name = "filling")
-    String filling;
-    /**    Наличие продолжения    */
-    @Column(name = "menu")
-    boolean menu;
+   private String filling;
 }
