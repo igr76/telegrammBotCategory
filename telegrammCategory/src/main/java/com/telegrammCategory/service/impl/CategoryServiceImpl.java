@@ -16,8 +16,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public String getCategoryPreviousLevel(int level) {
-        return categoryRepository.findById(level).getParent_node_id;
+    public int getCategoryPreviousLevel(int level) {
+        return categoryRepository.findPreviousLevel(level);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void deleteCategory(int id, int level) {
         Category category1 = categoryRepository.findByParentAndSeg(level,id);
-        categoryRepository.delete(category1.getId());
+        categoryRepository.delete(category1);
     }
 
     @Override

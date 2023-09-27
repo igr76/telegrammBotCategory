@@ -1,5 +1,7 @@
 package com.telegrammCategory.controller;
 
+import com.telegrammCategory.model.UserState;
+import com.telegrammCategory.repository.UserStateRepository;
 import com.telegrammCategory.service.CategoryService;
 import com.telegrammCategory.service.UpdateProducer;
 import com.telegrammCategory.utils.MessageUtils;
@@ -17,6 +19,8 @@ public class UpdateController {
     private  MessageUtils messageUtils;
     private  UpdateProducer updateProducer;
     private CategoryService categoryService;
+    private UserStateRepository userStateRepository;
+    private UserState userState;
 
     public UpdateController(TelegramBot telegramBot, MessageUtils messageUtils, UpdateProducer updateProducer) {
         this.telegramBot = telegramBot;
@@ -105,6 +109,9 @@ public class UpdateController {
         } catch (NumberFormatException e) {
             categoryService.greatCategory(level,message);
         }
+        UserState userState1 = new UserState();
+        userState1.setLevel(level);
+        userStateRepository.save(userState1);
     }
 
     private void greatCategory(Integer level, String message) {
