@@ -3,7 +3,7 @@ package com.telegrammCategory.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-/**    Сущность дерева категорий     */
+/**    Сущность состояния пользователей     */
 @Getter
 @Setter
 @ToString
@@ -13,11 +13,11 @@ import lombok.*;
 @Entity
 @Table(name = "userState")
 public class UserState {
-    /**    Идентификатор узла     */
+    /**    ChatId пользователя     */
     @Id
     @Column(name = "id")
     private Integer id;
-    /**    номер наследника     */
+    /**    уровень меню пользователя     */
     @Column(name = "level")
     private int level;
 }
