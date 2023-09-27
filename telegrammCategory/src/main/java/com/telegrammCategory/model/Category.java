@@ -17,6 +17,7 @@ public class Category {
     /**    Идентификатор узла     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
     /**    номер родительского узла     */
     @Column(name = "parent")
