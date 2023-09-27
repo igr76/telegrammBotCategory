@@ -75,8 +75,10 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
         var message = update.getMessage().getText();
         var chatId = update.getMessage().getChatId();
+
         if (userStateRepository.findLevelById(chatId) == null) {
-            level = 1;
+            level = 1; UserState userState = new UserState(); userState.setId(chatId);userState.setLevel(level);
+            userStateRepository.save(userState);
         }else    level = userStateRepository.findLevelById(chatId);
 
         switch (message) {

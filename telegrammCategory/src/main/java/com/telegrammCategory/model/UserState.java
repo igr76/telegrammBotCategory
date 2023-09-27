@@ -16,7 +16,7 @@ public class UserState {
     /**    ChatId пользователя     */
     @Id
     @Column(name = "id")
-    private Integer id;
+    private long id;
     /**    уровень меню пользователя     */
     @Column(name = "level")
     private int level;
