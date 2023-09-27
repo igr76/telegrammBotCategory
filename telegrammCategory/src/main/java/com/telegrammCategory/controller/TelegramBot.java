@@ -1,5 +1,7 @@
 package com.telegrammCategory.controller;
 
+import com.telegrammCategory.model.UserState;
+import com.telegrammCategory.repository.UserStateRepository;
 import com.telegrammCategory.service.CategoryService;
 import com.telegrammCategory.utils.MessageUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +24,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     private UpdateController updateController;
     private CategoryService categoryService;
     private MessageUtils messageUtils;
+    private UserStateRepository userStateRepository;
 
     public TelegramBot() {
         List<BotCommand> listofCommands = new ArrayList<>();
@@ -72,6 +75,10 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
         var message = update.getMessage().getText();
         var chatId = update.getMessage().getChatId();
+        if (userStateRepository.findLevelById(chatId) == null) {
+            level = 1;
+        }else    level = userStateRepository.findLevelById(chatId);
+
         switch (message) {
             case START -> {
                 String userName = update.getMessage().getChat().getUserName();
@@ -95,7 +102,9 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     private void previousCommand(Long chatId) {
-        categoryService.getCategoryPreviousLevel(level);
+       level= categoryService.getCategoryPreviousLevel(level);
+       UserState userState = new UserState();
+       userState.setLevel(level);
     }
 
     private void nextCommand(Long chatId) {

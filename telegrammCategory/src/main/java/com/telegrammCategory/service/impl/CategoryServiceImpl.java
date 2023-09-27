@@ -16,8 +16,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public String getCategoryPreviousLevel(int level) {
-        return categoryRepository.findPreviousLevel(level).toString();
+    public int getCategoryPreviousLevel(int level) {
+        return categoryRepository.findPreviousLevel(level);
     }
 
     @Override
