@@ -18,8 +18,9 @@
                     <constraints primaryKey="true"/>
                 </column>
             <column name="level" type="INT">
-                <constraints nullable="false"/>
-            </column>
+                </column>
+                <column name="lastAction" type="VARCHAR(16)">
+                </column>
         </createTable>
 
          </changeSet>

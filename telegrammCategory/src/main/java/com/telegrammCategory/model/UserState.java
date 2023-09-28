@@ -20,4 +20,7 @@ public class UserState {
     /**    уровень меню пользователя     */
     @Column(name = "level")
     private int level;
+    /**    последние действия пользователя     */
+    @Column(name = "lastAction")
+    private String lastAction;
 }
