@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserStateRepository extends JpaRepository<UserState, Integer> {
+public interface UserStateRepository extends JpaRepository<UserState, Long> {
     @Query(nativeQuery = true, value = "SELECT level FROM userState WHERE id = :chatId ")
     Integer findLevelById(Long chatId);
 }

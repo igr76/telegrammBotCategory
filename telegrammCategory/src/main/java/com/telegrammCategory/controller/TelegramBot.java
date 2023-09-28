@@ -5,42 +5,41 @@ import com.telegrammCategory.repository.UserStateRepository;
 import com.telegrammCategory.service.CategoryService;
 import com.telegrammCategory.service.UserService;
 import com.telegrammCategory.utils.MessageUtils;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.telegrammCategory.controller.AllText.*;
-
+@RequiredArgsConstructor
 @Slf4j
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
-    private UpdateController updateController;
-    private CategoryService categoryService;
-    private MessageUtils messageUtils;
-    private UserService userService;
-    private UserStateRepository userStateRepository;
-
-    public TelegramBot() {
-        List<BotCommand> listofCommands = new ArrayList<>();
-        listofCommands.add(new BotCommand("/next", "Следующий"));
-        listofCommands.add(new BotCommand("/previous", "Вернуться"));
-    }
+    private  UpdateController updateController;
+    private  CategoryService categoryService;
+    private  MessageUtils messageUtils;
+    private  UserService userService;
+    private  UserStateRepository userStateRepository;
 
     @Value("${bot.name}")
     private String botName;
     @Value("${bot.token}")
     private String botToken;
 
-    public static   String LAST_ACTION ;
-    public static   Integer level ;
+    public    String LAST_ACTION ;
+    public    Integer level ;
 
     @Override
     public String getBotUsername() {
