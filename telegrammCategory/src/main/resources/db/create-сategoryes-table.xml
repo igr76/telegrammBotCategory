@@ -16,7 +16,7 @@
 
 
         <createTable tableName="сategoryes">
-            <column name="id" type="BIGINT" autoIncrement="true">
+            <column name="id" type="INT" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
             <column name="parent" type="INT">

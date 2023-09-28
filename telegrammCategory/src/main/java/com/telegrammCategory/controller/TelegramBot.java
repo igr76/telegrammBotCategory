@@ -3,6 +3,7 @@ package com.telegrammCategory.controller;
 import com.telegrammCategory.model.UserState;
 import com.telegrammCategory.repository.UserStateRepository;
 import com.telegrammCategory.service.CategoryService;
+import com.telegrammCategory.service.UserService;
 import com.telegrammCategory.utils.MessageUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +25,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     private UpdateController updateController;
     private CategoryService categoryService;
     private MessageUtils messageUtils;
+    private UserService userService;
     private UserStateRepository userStateRepository;
 
     public TelegramBot() {
@@ -76,10 +78,10 @@ public class TelegramBot extends TelegramLongPollingBot {
         var message = update.getMessage().getText();
         var chatId = update.getMessage().getChatId();
 
-        if (userStateRepository.findLevelById(chatId) == null) {
+        if (userService.getUserState(chatId) == null) {
             level = 1; UserState userState = new UserState(); userState.setId(chatId);userState.setLevel(level);
-            userStateRepository.save(userState);
-        }else    level = userStateRepository.findLevelById(chatId);
+            userService.updateUserState(userState);
+        }else    level = userService.getLevelUserState(chatId);
 
         switch (message) {
             case START -> {
@@ -100,7 +102,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private void greatNewCommand(Long chatId) {
         sendAnswerTextMessage(chatId,"Введите номер расширяемой категории");
-        LAST_ACTION = GREAT_NEW;
+        userService.saveUserLastAction(GREAT_NEW,chatId);
     }
 
     private void previousCommand(Long chatId) {
@@ -111,7 +113,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private void nextCommand(Long chatId) {
         sendAnswerTextMessage(chatId,"В какое меню перейти?");
-        LAST_ACTION = NEXT;
+        userService.saveUserLastAction(NEXT,chatId);
     }
 
     private void getCommand(Long chatId) {
@@ -121,13 +123,13 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private void greatCommand(Long chatId) {
         sendAnswerTextMessage(chatId,"Введите название категории");
-        LAST_ACTION = GREAT;
+        userService.saveUserLastAction(GREAT,chatId);
 
     }
 
     private void deleteCommand(long chatId) {
         sendAnswerTextMessage(chatId,"Введите название категории");
-        LAST_ACTION = DELETE;
+        userService.saveUserLastAction(DELETE,chatId);
     }
 
     private void startCommand(Long chatId, String userName) {
@@ -173,6 +175,8 @@ public class TelegramBot extends TelegramLongPollingBot {
             log.error("Ошибка отправки сообщения", e);
         }
     }
+
+
 
 
 

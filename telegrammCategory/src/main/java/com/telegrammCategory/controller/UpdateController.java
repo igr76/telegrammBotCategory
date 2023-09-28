@@ -4,6 +4,7 @@ import com.telegrammCategory.model.UserState;
 import com.telegrammCategory.repository.UserStateRepository;
 import com.telegrammCategory.service.CategoryService;
 import com.telegrammCategory.service.UpdateProducer;
+import com.telegrammCategory.service.UserService;
 import com.telegrammCategory.utils.MessageUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -20,7 +21,7 @@ public class UpdateController {
     private  UpdateProducer updateProducer;
     private CategoryService categoryService;
     private UserStateRepository userStateRepository;
-    private UserState userState;
+    private UserService userService;
 
     public UpdateController(TelegramBot telegramBot, MessageUtils messageUtils, UpdateProducer updateProducer) {
         this.telegramBot = telegramBot;
@@ -84,8 +85,10 @@ public class UpdateController {
     }
     private void processTextMessage(Update update) {
         String message = update.getMessage().getText();
-        String last_sction = TelegramBot.LAST_ACTION;
-        Integer level = TelegramBot.level;
+        UserState userState = new UserState();
+        userState =  userService.getUserState(update.getUpdateId());
+        String last_sction =userState.getLastAction();
+        Integer level = userState.getLevel();
         switch (last_sction) {
             case GREAT -> greatCategory(level,message);
             case GREAT_NEW -> greatNewCategory(level,message);
