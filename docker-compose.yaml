@@ -3,7 +3,7 @@ version: '2.3'
 services:
   app:
     build: .
-    container_name: media
+    container_name: telegrammCategory
     depends_on:
       - db
     environment:

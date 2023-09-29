@@ -1,23 +1,35 @@
 package com.telegrammCategory.service.impl;
 
+import com.telegrammCategory.exception.ElemNotFound;
 import com.telegrammCategory.model.Category;
 import com.telegrammCategory.repository.CategoryRepository;
 import com.telegrammCategory.service.CategoryService;
-import org.jvnet.hk2.annotations.Service;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.Collection;
+
 
 /**  Сервис Категорий  */
+@RequiredArgsConstructor
 @Service
 public class CategoryServiceImpl implements CategoryService {
     private  Category category;
     private CategoryRepository categoryRepository;
+
+
     @Override
     public String getCategoryLevel(int level) {
-        return String.join("\n", categoryRepository.findByParent(level));
+        try {
+            Collection<String> getCategory = categoryRepository.findByParent(level);
+            return String.join("\n", getCategory);
+        }catch (ElemNotFound e){return "Это меню пустое";}
+
     }
 
     @Override
-    public String getCategoryPreviousLevel(int level) {
-        return categoryRepository.findById(level).getParent_node_id;
+    public int getCategoryPreviousLevel(int level) {
+        return categoryRepository.findPreviousLevel(level);
     }
 
     @Override
@@ -42,7 +54,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void deleteCategory(int id, int level) {
         Category category1 = categoryRepository.findByParentAndSeg(level,id);
-        categoryRepository.delete(category1.getId());
+        categoryRepository.delete(category1);
     }
 
     @Override

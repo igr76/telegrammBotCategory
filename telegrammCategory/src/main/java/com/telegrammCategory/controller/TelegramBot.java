@@ -1,41 +1,40 @@
 package com.telegrammCategory.controller;
 
+import com.telegrammCategory.model.UserState;
+import com.telegrammCategory.repository.UserStateRepository;
 import com.telegrammCategory.service.CategoryService;
+import com.telegrammCategory.service.UserService;
 import com.telegrammCategory.utils.MessageUtils;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static com.telegrammCategory.controller.AllText.*;
 
+@RequiredArgsConstructor
 @Slf4j
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
-    private UpdateController updateController;
-    private CategoryService categoryService;
-    private MessageUtils messageUtils;
-
-    public TelegramBot() {
-        List<BotCommand> listofCommands = new ArrayList<>();
-        listofCommands.add(new BotCommand("/next", "Следующий"));
-        listofCommands.add(new BotCommand("/previous", "Вернуться"));
-    }
+    private final UpdateController updateController;
+    private final CategoryService categoryService;
+    private final MessageUtils messageUtils;
+    private  final UserService userService;
+    private  final UserStateRepository userStateRepository;
 
     @Value("${bot.name}")
     private String botName;
     @Value("${bot.token}")
-    private String botToken;
+    private  String botToken;
 
-    public static   String LAST_ACTION ;
-    public static   Integer level ;
+    public    String LAST_ACTION ;
+    public    Integer level ;
 
     @Override
     public String getBotUsername() {
@@ -72,6 +71,12 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
         var message = update.getMessage().getText();
         var chatId = update.getMessage().getChatId();
+
+        if (userService.getUserState(chatId) == null) {
+            level = 1; UserState userState = new UserState(); userState.setId(chatId);userState.setLevel(level);
+            userService.updateUserState(userState);
+        }else    level = userService.getLevelUserState(chatId);
+
         switch (message) {
             case START -> {
                 String userName = update.getMessage().getChat().getUserName();
@@ -91,16 +96,18 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private void greatNewCommand(Long chatId) {
         sendAnswerTextMessage(chatId,"Введите номер расширяемой категории");
-        LAST_ACTION = GREAT_NEW;
+        userService.saveUserLastAction(GREAT_NEW,chatId);
     }
 
     private void previousCommand(Long chatId) {
-        categoryService.getCategoryPreviousLevel(level);
+       level= categoryService.getCategoryPreviousLevel(level);
+       UserState userState = new UserState();
+       userState.setLevel(level);
     }
 
     private void nextCommand(Long chatId) {
         sendAnswerTextMessage(chatId,"В какое меню перейти?");
-        LAST_ACTION = NEXT;
+        userService.saveUserLastAction(NEXT,chatId);
     }
 
     private void getCommand(Long chatId) {
@@ -110,13 +117,13 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private void greatCommand(Long chatId) {
         sendAnswerTextMessage(chatId,"Введите название категории");
-        LAST_ACTION = GREAT;
+        userService.saveUserLastAction(GREAT,chatId);
 
     }
 
     private void deleteCommand(long chatId) {
         sendAnswerTextMessage(chatId,"Введите название категории");
-        LAST_ACTION = DELETE;
+        userService.saveUserLastAction(DELETE,chatId);
     }
 
     private void startCommand(Long chatId, String userName) {
@@ -129,7 +136,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 /get - получить список категорий
                 /great - создать категорию
                 /delete - удалить категорию
-                
+                 /greatNew- Cоздать новое меню
                 Дополнительные команды:
                 /help - получение справки
                 """;
@@ -145,7 +152,9 @@ public class TelegramBot extends TelegramLongPollingBot {
                 Для этого воспользуйтесь командами:
                 /get - получить список категорий
                 /great - создать категорию
+                /greatNew- Cоздать новое меню
                 /delete - удалить категорию
+                /help - получение справки
                 """;
         sendMessage(chatId, text);
     }
@@ -162,6 +171,8 @@ public class TelegramBot extends TelegramLongPollingBot {
             log.error("Ошибка отправки сообщения", e);
         }
     }
+
+
 
 
 
