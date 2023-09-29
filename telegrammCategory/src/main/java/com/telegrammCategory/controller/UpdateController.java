@@ -6,28 +6,25 @@ import com.telegrammCategory.service.CategoryService;
 import com.telegrammCategory.service.UpdateProducer;
 import com.telegrammCategory.service.UserService;
 import com.telegrammCategory.utils.MessageUtils;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import static com.telegrammCategory.controller.AllText.*;
-/**  Контроллер Категорий  */
+/**  Контроллер ответа  */
 @Slf4j
+@RequiredArgsConstructor
 @Component
 public class UpdateController {
     private  TelegramBot telegramBot;
-    private  MessageUtils messageUtils;
-    private  UpdateProducer updateProducer;
-    private CategoryService categoryService;
-    private UserStateRepository userStateRepository;
-    private UserService userService;
+    private final MessageUtils messageUtils;
+    private final UpdateProducer updateProducer;
+    private final CategoryService categoryService;
+    private final UserStateRepository userStateRepository;
+    private final UserService userService;
 
-    public UpdateController(TelegramBot telegramBot, MessageUtils messageUtils, UpdateProducer updateProducer) {
-        this.telegramBot = telegramBot;
-        this.messageUtils = messageUtils;
-        this.updateProducer = updateProducer;
-    }
 
     public void registerBot(TelegramBot telegramBot) {
         this.telegramBot = telegramBot;
