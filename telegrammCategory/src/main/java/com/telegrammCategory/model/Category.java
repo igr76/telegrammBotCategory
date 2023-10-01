@@ -1,6 +1,5 @@
 package com.telegrammCategory.model;
-
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -11,24 +10,24 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-@Entity
-@Table(name = "сategoryes")
+//@Entity
+//@Table(name = "сategoryes")
 public class Category {
     /**    Идентификатор узла     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Column(name = "id")
     private Integer id;
     /**    номер родительского узла     */
-    @Column(name = "parent")
+//    @Column(name = "parent")
     private int parent_node_id;
     /**    номер наследника     */
-    @Column(name = "seq")
+//    @Column(name = "seq")
     private int seq;
     /**    Имя узла     */
-    @Column(name = "name")
+//    @Column(name = "name")
     private String name;
     /**    Содержание узла     */
-    @Column(name = "filling")
+//    @Column(name = "filling")
    private String filling;
 }

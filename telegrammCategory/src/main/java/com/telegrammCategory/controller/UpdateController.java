@@ -114,7 +114,7 @@ public class UpdateController {
         }
         UserState userState1 = new UserState();
         userState1.setLevel(level);
-        userStateRepository.save(userState1);
+      //  userStateRepository.save(userState1);
     }
 
     private void greatCategory(Integer level, String message) {

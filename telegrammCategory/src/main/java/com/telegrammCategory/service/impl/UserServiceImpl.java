@@ -12,7 +12,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserState getUserState(long chatId) {
-        return  userStateRepository.findById(chatId).orElseThrow();
+        return  userStateRepository.findById(chatId);// .orElseThrow();
     }
 
     @Override
