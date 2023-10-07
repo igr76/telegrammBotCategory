@@ -5,15 +5,15 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
 
-        <changeSet id="create-userState-table" author="Igor Gritsuk">
+        <changeSet id="create-user_state-table" author="Igor Gritsuk">
 
             <preConditions>
                 <not>
-                    <tableExists tableName="userState"/>
+                    <tableExists tableName="user_state"/>
                 </not>
             </preConditions>
 
-            <createTable tableName="userState">
+            <createTable tableName="user_state">
                 <column name="id" type="BIGINT" >
                     <constraints primaryKey="true"/>
                 </column>

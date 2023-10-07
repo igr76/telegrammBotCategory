@@ -1,7 +1,12 @@
 package com.telegrammCategory.model;
 
-import javax.persistence.*;
+//import javax.persistence.*;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.*;
+
 
 /**    Сущность состояния пользователей     */
 @Getter
@@ -10,11 +15,11 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-//@Entity
-//@Table(name = "userState")
+@Entity
+@Table(name = "user_state")
 public class UserState {
     /**    ChatId пользователя     */
-//    @Id
+    @Id
 //    @Column(name = "id")
     private long id;
     /**    уровень меню пользователя     */

@@ -18,13 +18,13 @@ public class BotInitializer {
 
     TelegramBot bot;
 
-    @EventListener({ContextRefreshedEvent.class})
-    public void init() throws TelegramApiException {
-        TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
-        try {
-            telegramBotsApi.registerBot(bot);
-        } catch (TelegramApiRequestException e) {
-            log.error(e.getMessage());
-        }
-    }
+//    @EventListener({ContextRefreshedEvent.class})
+//    public void init() throws TelegramApiException {
+//        TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
+//        try {
+//            telegramBotsApi.registerBot(bot);
+//        } catch (TelegramApiRequestException e) {
+//            log.error(e.getMessage());
+//        }
+//    }
 }

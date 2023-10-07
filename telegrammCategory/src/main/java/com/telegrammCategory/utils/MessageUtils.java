@@ -14,10 +14,10 @@ public class MessageUtils {
         sendMessage.setText(text);
         return sendMessage;
     }
-    public SendMessage generateSendMessageWithTextOfChatId(long ChatId, String text) {
-        var sendMessage = new SendMessage();
-        sendMessage.setChatId(Long.toString(ChatId));
-        sendMessage.setText(text);
-        return sendMessage;
-    }
+//    public SendMessage generateSendMessageWithTextOfChatId(long ChatId, String text) {
+//        var sendMessage = new SendMessage();
+//        sendMessage.setChatId(Long.toString(ChatId));
+//        sendMessage.setText(text);
+//        return sendMessage;
+//    }
 }
