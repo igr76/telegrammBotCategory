@@ -10,15 +10,25 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 
 /**  Сервис Категорий  */
 
-@AllArgsConstructor
+
 @Service
 public class CategoryServiceImpl implements CategoryService {
     private CategoryRepository categoryRepository;
+    private Set<Integer> u= new HashSet<>();
+    private char ch = ' ';
+    private List<String> categoryStringList = new ArrayList<>();
 
-
+    public CategoryServiceImpl(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
     @Override
     public String getCategoryLevel(int level) {
         return String.join("\n", categoryRepository.findAllByParent(level));
@@ -69,5 +79,42 @@ public class CategoryServiceImpl implements CategoryService {
         category1.setName(category1.getName() + " >");
         categoryRepository.save(category1);
         return category1.getId();
+    }
+
+    @Override
+    public String viewTree() {
+        categoryStringList.clear();
+        int l=0;
+        List<Category> categoryList = categoryRepository.findAll();
+        for (int i = 0; i < categoryList.size()-1; i++) {
+            if (1==0){tree(categoryList,l);}
+
+            if (u.contains(i)) { break; }else tree(categoryList,i);
+        }
+        return String.join("\n",categoryStringList);
+    }
+    void tree(List<Category> e,int l) {
+        for (int m = 0; m <e.size()-1; m++) {
+            if (e.get(m).getParent() == e.get(l).getId()) {
+                l=e.get(m).getId();
+                ch +=ch;
+                categoryStringList.add(ch+e.get(l).getName());
+                u.add(l);
+            }
+
+        }
+        backTree(e,l);
+    }
+
+    void backTree(List<Category> e,int l) {
+        while (l <= 1) {
+            for (int i = 0; i < e.size()-1; i++) {
+                if (e.get(i).getParent() == l) {
+                    categoryStringList.add(ch+e.get(l).getName());
+                    u.add(l);
+                }
+            }
+            ch-=ch; l=e.get(l).getParent();
+        }
     }
 }

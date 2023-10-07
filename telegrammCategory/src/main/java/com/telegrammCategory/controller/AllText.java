@@ -10,5 +10,6 @@ public class AllText {
     public static final String DELETE = "/delete";
     public static final String HELP = "/help";
     static final String NEXT = "/next";
+    static final String VIEW_TREE = "/viewTree";
     static final String PREVIOUS = "/previous";
 }
