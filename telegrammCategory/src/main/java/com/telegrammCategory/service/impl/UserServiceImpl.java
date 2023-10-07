@@ -1,43 +1,47 @@
 package com.telegrammCategory.service.impl;
 
-import com.telegrammCategory.exception.ElemNotFound;
+
+
 import com.telegrammCategory.model.UserState;
 import com.telegrammCategory.repository.UserStateRepository;
 import com.telegrammCategory.service.UserService;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-
 /**  Сервис Категорий  */
-@RequiredArgsConstructor
+@Slf4j
+@Component
 @Service
 public class UserServiceImpl implements UserService {
-    private final UserStateRepository userStateRepository;
+    private UserStateRepository userStateRepository;
 
-
-    @Override
-    public UserState getUserState(long chatId) {
-        try {
-           return userStateRepository.findById(chatId).orElseThrow(ElemNotFound::new);
-        }catch (RuntimeException e){return null;}
+    public UserServiceImpl(UserStateRepository userStateRepository) {
+        this.userStateRepository = userStateRepository;
     }
 
     @Override
-    public void updateUserState(UserState userState) {
-        userStateRepository.save(userState);
+    public UserState getUserState(long chatId) {
+        return  userStateRepository.findById(chatId);
+    }
+
+    @Override
+    public void updateUserState(UserState userState,long chatId) {
+        userStateRepository.updateUserState(userState,chatId);
     }
 
     @Override
     public int getLevelUserState(long chatId) {
-        
-        return userStateRepository.findLevelById(chatId);
+        return         userStateRepository.getLevelUserState(chatId);
     }
 
     @Override
     public void saveUserLastAction(String action,long chatId) {
-        UserState userState = new UserState();
-        userState.setId(chatId);
-        userState.setLastAction(action);
-        userStateRepository.save(userState);
+        userStateRepository.saveUserLastAction(action, chatId);
+    }
+
+    @Override
+    public void setLevelUserState(long chatId,int level) {
+        userStateRepository.setLevelUserState(chatId,level);
     }
 }

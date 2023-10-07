@@ -1,8 +1,8 @@
 package com.telegrammCategory.model;
-
+//import javax.persistence.*;
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.FieldDefaults;
+
 
 /**    Сущность дерева категорий     */
 @Getter
@@ -17,18 +17,18 @@ public class Category {
     /**    Идентификатор узла     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+//    @Column(name = "id")
     private Integer id;
     /**    номер родительского узла     */
-    @Column(name = "parent")
-    private int parent_node_id;
+//    @Column(name = "parent")
+    private int parent;
     /**    номер наследника     */
-    @Column(name = "seq")
+//    @Column(name = "seq")
     private int seq;
     /**    Имя узла     */
-    @Column(name = "name")
+//    @Column(name = "name")
     private String name;
     /**    Содержание узла     */
-    @Column(name = "filling")
+//    @Column(name = "filling")
    private String filling;
 }
