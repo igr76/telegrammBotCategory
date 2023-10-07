@@ -1,11 +1,21 @@
 package com.telegrammCategory.controller;
 
 
+import com.telegrammCategory.exception.ElemNotFound;
+import com.telegrammCategory.model.Category;
+import com.telegrammCategory.model.UserState;
+import com.telegrammCategory.repository.CategoryRepository;
+import com.telegrammCategory.service.CategoryService;
+import com.telegrammCategory.service.UpdateProducer;
+import com.telegrammCategory.service.UserService;
+import com.telegrammCategory.utils.MessageUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+
+import static com.telegrammCategory.controller.AllText.*;
 
 /**  Контроллер Категорий  */
 @Slf4j
