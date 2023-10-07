@@ -73,9 +73,14 @@ public class TelegramBot extends TelegramLongPollingBot {
                 case HELP -> helpCommand(chatId);
                 case NEXT -> nextCommand(chatId);
                 case PREVIOUS -> previousCommand(chatId);
+                case VIEW_TREE -> viewTreeCommand(chatId);
                 default -> unknownCommand(update);
             }
         }
+    }
+
+    private void viewTreeCommand(long chatId) {
+        sendMessage(chatId, categoryService.viewTree());
     }
 
     private void getCommand(long chatId) {
