@@ -7,11 +7,10 @@ import java.util.Collection;
 public interface CategoryService {
     public String getCategoryLevel(int id);
     public String  getCategoryPreviousLevel(int level);
-    public String  greatCategory(int level,String name);
-    public String  greatNewCategory(int id,String name);
-    public void deleteCategory(int id,int level);
-
-    public int newLevel(Integer level, int value);
-
+    public void deleteCategory(String text);
     String viewTree();
+    void addTwo( String fatherCategory, String childrenCategory);
+
+    void addOne( String textCommand);
+
 }

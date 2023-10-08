@@ -98,61 +98,10 @@ public class UpdateController {
         if (last_sction == null) {
             return;
         }
-        Integer level = userState.getLevel();
-        switch (last_sction) {
-            case GREAT -> greatCategory(level,message,update);
-            case GREAT_NEW -> greatNewCategory(level,message,update);
-            case DELETE -> deleteCategory(level,message);
-            case NEXT -> nextCategory(level,message,update);
-
-        }
     }
 
-    private void nextCategory(Integer level, String message,Update update) {
-        try {
-            int value = Integer.parseInt(message);
-            Category category = categoryRepository.findByParentAndSeg(level,value).orElseThrow(ElemNotFound::new);
-            String text = categoryService.getCategoryLevel(category.getId());
-            telegramBot.sendAnswerTextMessage(update.getMessage().getChatId(),
-                    text);
 
-        } catch (NumberFormatException e) {
-            telegramBot.sendAnswerTextMessage(update.getMessage().getChatId(),
-                    "Неверные данные");
-        }
-    }
 
-    private void deleteCategory(Integer level, String message) {
-        log.info("deleteCategory");
-        try {
-            int Value = Integer.parseInt(message);
-            categoryService.deleteCategory(Value,level);
-        } catch (NumberFormatException e) {
-
-        }
-    }
-    private void greatNewCategory(Integer level, String message,Update update) {
-        try {
-            int Value = Integer.parseInt(message);
-            level = categoryService.newLevel(level,Value);
-            userService.setLevelUserState(update.getMessage().getChatId(),level);
-            telegramBot.sendAnswerTextMessage(update.getMessage().getChatId(),
-                    "Введите имя новой категории");
-
-        } catch (NumberFormatException e) {
-            categoryService.greatCategory(level,message);
-        }
-//        UserState userState1 = new UserState();
-//        userState1.setLevel(level);
-//        userStateRepository.save(userState1);
-    }
-
-    private void greatCategory(Integer level, String message,Update update) {
-        categoryService.greatCategory(level,message);
-        telegramBot.sendAnswerTextMessage(update.getMessage().getChatId(),
-                categoryService.getCategoryPreviousLevel(level));
-
-    }
 
 
     private void setFileIsReceivedView(Update update) {

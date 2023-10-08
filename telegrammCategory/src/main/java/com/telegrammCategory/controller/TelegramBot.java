@@ -66,13 +66,10 @@ public class TelegramBot extends TelegramLongPollingBot {
                     String userName = update.getMessage().getChat().getUserName();
                     startCommand(chatId, userName);
                 }
-                case GREAT -> greatCommand(chatId);
-                case GREAT_NEW -> greatNewCommand(chatId);
+                case ADD -> greatCommand(messageText);
                 case GET -> getCommand(chatId);
-                case DELETE -> deleteCommand(chatId);
+                case DELETE -> deleteCommand(messageText);
                 case HELP -> helpCommand(chatId);
-                case NEXT -> nextCommand(chatId);
-                case PREVIOUS -> previousCommand(chatId);
                 case VIEW_TREE -> viewTreeCommand(chatId);
                 default -> unknownCommand(update);
             }
@@ -94,16 +91,6 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     }
 
-    private void previousCommand(long chatId) {
-        if (level > 1) {
-            sendMessage(chatId, categoryService.getCategoryPreviousLevel(level));
-        }else sendMessage(chatId, "Выше нет уровня");
-    }
-
-    private void nextCommand(long chatId) {
-        sendAnswerTextMessage(chatId,"Введите номер  категории для перехода");
-        userService.saveUserLastAction(NEXT,chatId);
-    }
 
     private void helpCommand(long chatId) {
         var text = """
@@ -122,20 +109,20 @@ public class TelegramBot extends TelegramLongPollingBot {
         sendMessage(chatId, text);
     }
 
-    private void deleteCommand(long chatId) {
-        sendAnswerTextMessage(chatId,"Введите номер удаляемой  категории");
-        userService.saveUserLastAction(DELETE,chatId);
+    private void deleteCommand(String text) {
+        String textCommand = text.substring(12);
+        categoryService.deleteCategory(textCommand);
     }
 
-    private void greatNewCommand(long chatId) {
-        System.out.println(level);
-        sendAnswerTextMessage(chatId,"Введите номер расширяемой  категории");
-        userService.saveUserLastAction(GREAT_NEW,chatId);
+    private void greatNewCommand(String fatherCategory,String childrenCategory) {
+        categoryService.addTwo(fatherCategory,childrenCategory);
     }
 
-    private void greatCommand(long chatId) {
-        sendAnswerTextMessage(chatId,"Введите имя новой категории");
-        userService.saveUserLastAction(GREAT,chatId);
+    private void greatCommand(String text) {
+        String textCommand = text.substring(12);
+        String[] textArray = textCommand.split(" ");
+        if (textArray.length > 1) {greatNewCommand(textArray[0],textArray[1]);}
+        categoryService.addOne(textCommand);
     }
 
 
