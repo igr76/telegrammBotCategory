@@ -6,7 +6,8 @@
   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
 
     <include file="create-сategoryes-table.xml" relativeToChangelogFile="true"/>
-    <include file="create-userState-table.xml" relativeToChangelogFile="true"/>
+    <include file="create-user_state-table.xml" relativeToChangelogFile="true"/>
+    <include file="01_update_categoryes_table.sql" relativeToChangelogFile="true"/>
 
 
 </databaseChangeLog>

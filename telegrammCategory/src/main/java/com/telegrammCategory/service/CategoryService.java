@@ -6,10 +6,11 @@ import java.util.Collection;
 /**  Сервис Категорий  */
 public interface CategoryService {
     public String getCategoryLevel(int id);
-    public int  getCategoryPreviousLevel(int level);
-    public String  greatCategory(int level,String name);
-    public String  greatNewCategory(int id,String name);
-    public void deleteCategory(int id,int level);
+    public String  getCategoryPreviousLevel(int level);
+    public void deleteCategory(String text);
+    String viewTree();
+    void addTwo( String fatherCategory, String childrenCategory);
 
-    public int newLevel(Integer level, int value);
+    void addOne( String textCommand);
+
 }

@@ -15,12 +15,12 @@ import java.util.List;
 @SpringBootApplication
 public class TelegrammCategoryApplication {
 
-    public static void main(String[] args) throws TelegramApiException {
+    public static void main(String[] args)  {
 		SpringApplication.run(TelegrammCategoryApplication.class, args);
 
-		List<BotCommand> listofCommands = new ArrayList<>();
-		listofCommands.add(new BotCommand("/next", "Следующий"));
-		listofCommands.add(new BotCommand("/previous", "Вернуться"));
+//		List<BotCommand> listofCommands = new ArrayList<>();
+//		listofCommands.add(new BotCommand("/next", "Следующий"));
+//		listofCommands.add(new BotCommand("/previous", "Вернуться"));
 
 	}
 

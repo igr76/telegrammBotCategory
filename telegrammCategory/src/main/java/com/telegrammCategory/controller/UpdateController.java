@@ -1,43 +1,49 @@
 package com.telegrammCategory.controller;
 
+
+import com.telegrammCategory.exception.ElemNotFound;
+import com.telegrammCategory.model.Category;
 import com.telegrammCategory.model.UserState;
-import com.telegrammCategory.repository.UserStateRepository;
+import com.telegrammCategory.repository.CategoryRepository;
 import com.telegrammCategory.service.CategoryService;
 import com.telegrammCategory.service.UpdateProducer;
 import com.telegrammCategory.service.UserService;
 import com.telegrammCategory.utils.MessageUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import static com.telegrammCategory.controller.AllText.*;
+
 /**  Контроллер Категорий  */
 @Slf4j
 @Component
 public class UpdateController {
     private  TelegramBot telegramBot;
-    private  MessageUtils messageUtils;
-    private  UpdateProducer updateProducer;
+    private MessageUtils messageUtils;
+    private UserState userState;
     private CategoryService categoryService;
-    private UserStateRepository userStateRepository;
     private UserService userService;
+    private CategoryRepository categoryRepository;
+    private UpdateProducer updateProducer;
 
-    public UpdateController(TelegramBot telegramBot, MessageUtils messageUtils, UpdateProducer updateProducer) {
+    public UpdateController(@Lazy TelegramBot telegramBot, MessageUtils messageUtils,
+                            UserState userState, CategoryService categoryService, UserService userService) {
         this.telegramBot = telegramBot;
         this.messageUtils = messageUtils;
-        this.updateProducer = updateProducer;
+        this.userState = userState;
+        this.categoryService = categoryService;
+        this.userService = userService;
     }
 
-    public void registerBot(TelegramBot telegramBot) {
-        this.telegramBot = telegramBot;
-    }
 
-    private void setUnssupportedMessageTipeView(Update update) {
-        var sendMessage = messageUtils.generateSendMessageWithText(update,
-                "Неподдерживаемый тип сообщения");
-                setView(sendMessage);
-    }
+//    private void setUnssupportedMessageTipeView(Update update) {
+//        var sendMessage = messageUtils.generateSendMessageWithText(update,
+//                "Неподдерживаемый тип сообщения");
+//                setView(sendMessage);
+//    }
 
 
 
@@ -55,6 +61,7 @@ public class UpdateController {
     }
 
     private void distributeMessagesByType(Update update) {
+        log.info("distributeMessagesByType");
         var message = update.getMessage();
         if (message.hasText()) {
             processTextMessage(update);
@@ -76,50 +83,25 @@ public class UpdateController {
     }
 
     private void processPhotoMessage(Update update) {
-        updateProducer.produce(AllText.PHOTO_MESSAGE_UPDATE,update);
+        updateProducer.produce(PHOTO_MESSAGE_UPDATE,update);
         setFileIsReceivedView(update);
     }
     private void processDocMessage(Update update) {
-        updateProducer.produce(AllText.DDC_MESSAGE_UPDATE,update);
+        updateProducer.produce(DDC_MESSAGE_UPDATE,update);
         setFileIsReceivedView(update);
     }
     private void processTextMessage(Update update) {
         String message = update.getMessage().getText();
         UserState userState = new UserState();
-        userState =  userService.getUserState(update.getUpdateId());
+        userState =  userService.getUserState(update.getMessage().getChatId());
         String last_sction =userState.getLastAction();
-        Integer level = userState.getLevel();
-        switch (last_sction) {
-            case GREAT -> greatCategory(level,message);
-            case GREAT_NEW -> greatNewCategory(level,message);
-            case DELETE -> deleteCategory(level,message);
-
-            }
-        }
-
-    private void deleteCategory(Integer level, String message) {
-        try {
-            int Value = Integer.parseInt(message);
-             categoryService.deleteCategory(Value,level);
-        } catch (NumberFormatException e) {
-
+        if (last_sction == null) {
+            return;
         }
     }
-    private void greatNewCategory(Integer level, String message) {
-        try {
-            int Value = Integer.parseInt(message);
-            level = categoryService.newLevel(level,Value);
-        } catch (NumberFormatException e) {
-            categoryService.greatCategory(level,message);
-        }
-        UserState userState1 = new UserState();
-        userState1.setLevel(level);
-        userStateRepository.save(userState1);
-    }
 
-    private void greatCategory(Integer level, String message) {
-        categoryService.greatCategory(level,message);
-    }
+
+
 
 
     private void setFileIsReceivedView(Update update) {
